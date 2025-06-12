@@ -11,33 +11,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/greeting")
 public class GreetingController {
-
 	
 	@PostMapping
-	public ResponseEntity<String> postGreeting(@RequestBody String value) throws Exception {
+	public ResponseEntity<String> postGreeting
+		(@RequestBody String value) throws Exception {
 		if (value.length() > 10)
-			throw new Exception("Tamanho do value deve ser no maximo 10");
+			throw new Exception("Tamanho do value deve ser no máximo 10");
 		return ResponseEntity.status(HttpStatus.CREATED).body(value);
 	}
 	
-	
-	
-	@GetMapping(value = {"", "/{namePath}"})
+
+	@GetMapping(value = {"","/","/{namePath}"})
 	public String getGreeting(
 			@RequestParam(required = false) String name,
 			@PathVariable(required = false) String namePath) {
 		if (name == null)
-			name = namePath != null ? namePath : "world";
-		String returnGreeting = String.format("%s %s!","Hello" , name);
+			name = namePath != null ? namePath : "World";
+		String returnGreeting = String.format("%s %s!", "Hello", name);
 		return returnGreeting;
 	}
+	
 	@ExceptionHandler(value = Exception.class)
-	public ResponseEntity<String> handlerExcepition(Exception ex) {
+	public ResponseEntity<String> handlerException(Exception ex) {
 		String message = ex.getMessage().replaceAll("\r\n", "");
 		return ResponseEntity.badRequest().body(message);
 	}
+	
+	
+	
 }
